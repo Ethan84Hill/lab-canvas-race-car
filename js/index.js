@@ -51,20 +51,20 @@ window.onload = () => {
       ctx.restore();
     }
   }
-
+  let obstaclesArr = []
   let obstacles = {
     w: Math.floor(Math.random() * canvas.width),
     h: 30,
     speed: 1, 
     x: Math.floor(Math.random() * canvas.width),
     y: 0,
-    color: 'red',
     draw: function() {  
       ctx.fillStyle = 'brown'
       ctx.fillRect(obstacles.x, obstacles.y, obstacles.w, obstacles.h)
     }
   }
 
+  obstaclesArr.push(obstacles)
 
   const imgRoad = new Image();
   imgRoad.src = 'images/road.png';
