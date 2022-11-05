@@ -32,9 +32,9 @@ window.onload = () => {
 
     road.draw();
     raceCar.draw();
-    obstacles.draw();
+    drawObs();
+    score();
   }
-
 
   let xCord = 225
   let yCord = 600
@@ -51,6 +51,7 @@ window.onload = () => {
       ctx.restore();
     }
   }
+
   let obstaclesArr = []
   let obstacles = {
     w: Math.floor(Math.random() * canvas.width),
@@ -64,7 +65,29 @@ window.onload = () => {
     }
   }
 
-  obstaclesArr.push(obstacles)
+  class Obstacle {
+    constructor(){
+      this.y = 0;
+      this.x = Math.floor(Math.random() * canvas.width)
+      this.h = 30;
+      this.w = 200
+    }
+    draw(){
+      ctx.fillStyle = 'brown'
+      ctx.fillRect(this.x, this.y, this.w, this.h)
+    }
+  }
+
+ function drawObs(){
+    for(let i = 0; i < obstaclesArr.length; i++){
+      obstaclesArr[i].y += 1
+      obstaclesArr[i].draw()
+    }
+  }
+
+  function clearObs() {
+    clearInterval(obsInterval)
+  }
 
   const imgRoad = new Image();
   imgRoad.src = 'images/road.png';
@@ -75,8 +98,18 @@ window.onload = () => {
     }
   }
 
+ let obsInterval = setInterval(() => {
+    obstaclesArr.push(new Obstacle())
+  }, 2000)
  
+  let startScore = 0
 
+  function score() {
+    const points = Math.floor(startScore += 0.01)
+    ctx.font = '25px sans-serif'
+    ctx.fillStyle = 'black'
+    ctx.fillText(`Score: ${points}`, 370, 50)
+  }
 
 
 
