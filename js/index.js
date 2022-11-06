@@ -34,6 +34,7 @@ window.onload = () => {
     raceCar.draw();
     drawObs();
     score();
+    obsCollisions(raceCar, obstaclesArr[i])
   }
 
   let xCord = 225
@@ -53,17 +54,6 @@ window.onload = () => {
   }
 
   let obstaclesArr = []
-  let obstacles = {
-    w: Math.floor(Math.random() * canvas.width),
-    h: 30,
-    speed: 1, 
-    x: Math.floor(Math.random() * canvas.width),
-    y: 0,
-    draw: function() {  
-      ctx.fillStyle = 'brown'
-      ctx.fillRect(obstacles.x, obstacles.y, obstacles.w, obstacles.h)
-    }
-  }
 
   class Obstacle {
     constructor(){
@@ -111,23 +101,27 @@ window.onload = () => {
     ctx.fillText(`Score: ${points}`, 370, 50)
   }
 
+  function obsCollisions(car, obstacles) {
+    if (
+        car.xCord < obstacles.x + obstacles.w &&
+        car.xCord + car.width > obstacles.x &&
+        car.yCord < obstacles.y + obstacles.h &&
+        car.yCord + car.height > obstacles.y
+      ) {
+        gameOver()
+        clearObs()
+      }
+}
 
+  function gameOver() {
+    window.cancelAnimationFrame(dodge);
 
-
- 
-
-  //  collisionCheck(obstacle) {
-  //    if (
-  //      this.x < obstacle.x + obstacle.width &&
-  //      this.x + this.width > obstacle.x &&
-  //      this.y < obstacle.y + obstacle.height &&
-  //      this.height + this.y > obstacle.y
-  //    ) {
-  //      // Collision detected!
-  //      return true;
-      
-  //    } else {
-  //      // No collision
-  //      return false;
-  //    }
-  //  }
+    ctx.fillStyle = 'black'
+    ctx.fillRect(0, 0, 500, 700)
+    ctx.fillStyle = 'red'
+    ctx.font = '40px sans-serif'
+    ctx.fillText('Game Over!', 250, 100)
+    ctx.fillStyle = 'white'
+    ctx.font = '30px sans-serif'
+    ctx.fillText(`Your Final Score: ${points}`, 250, 200)
+  }
